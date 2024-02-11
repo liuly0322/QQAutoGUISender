@@ -1,6 +1,8 @@
 import pyautogui
 import pyperclip
 import time
+import subprocess
+
 
 class MessageSender:
     def __init__(self) -> None:
@@ -16,15 +18,25 @@ class MessageSender:
             exit(1)
         self.text_box_x, self.text_box_y = pyautogui.center(text_box_position)
 
-    def send(self, message) -> None:
+    def send(self, message, picturePaths=None) -> None:
         pyperclip.copy(message)
         time.sleep(2)
         pyautogui.click(self.text_box_x, self.text_box_y)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(1)
+        if picturePaths:
+            for picturePath in picturePaths:
+                subprocess.run(
+                    ["xclip", "-selection", "clipboard", "-t", "image/png", "-i", f"{picturePath}"]
+                )
+                time.sleep(2)
+                pyautogui.hotkey('ctrl', 'v')
+                time.sleep(1)
         pyautogui.click(self.send_button_x, self.send_button_y)
+
 
 if __name__ == "__main__":
     sender = MessageSender()
     sender.send("hello!")
+    sender.send("hello.png: ", ["asset/hello.png", "asset/hello.png"])
     sender.send("这里是自动发送的消息。")
