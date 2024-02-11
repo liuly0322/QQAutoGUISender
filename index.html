@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>路过的某不知名 bot</title>
+</head>
+<body>
+    <h1>路过的某不知名 bot</h1>
+    <form id="form">
+        <input type="text" id="id" placeholder="群号（作为验证用）">
+        <input type="text" id="nickname" placeholder="昵称">
+        <input type="text" id="content" placeholder="内容">
+        <button type="submit">提交</button>
+        <div id="result"></div>
+    </form>
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+        }
+        input {
+            margin: 10px;
+            padding: 5px;
+        }
+        button {
+            padding: 5px;
+        }
+    </style>
+    <script>
+        document.getElementById('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const id = document.getElementById('id').value;
+            const nickname = document.getElementById('nickname').value;
+            const content = document.getElementById('content').value;
+            document.getElementById('result').innerText = '正在发送...';
+            document.getElementById('content').value = '';
+            fetch('/bot/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: id,
+                    nickname: nickname,
+                    content: content
+                })
+            })
+            .then(function (res) {
+                return res.text();
+            })
+            .then(function (data) {
+                document.getElementById('result').innerText = data;
+            });
+        });
+    </script>
+</body>
+</html>
