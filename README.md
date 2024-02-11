@@ -21,4 +21,4 @@ You can frp to this server to make it public, or deploy it on a VPS with public 
 
 ## content format
 
-The content support image with `![image](url)` format.
+The content support image with `![](url)` format.
