@@ -11,6 +11,7 @@ sender = MessageSender()
 lock = threading.Lock()
 
 class RequestHandler(BaseHTTPRequestHandler):
+    timeout = 30
     def do_GET(self):
         if self.path == "/index.html" or self.path == "/":
             with open("index.html", "rb") as f:
