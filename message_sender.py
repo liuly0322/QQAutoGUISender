@@ -18,16 +18,16 @@ class MessageSender:
             exit(1)
         self.text_box_x, self.text_box_y = pyautogui.center(text_box_position)
 
-    def send(self, message, picturePaths=None) -> None:
+    def send(self, message, picture_paths=None) -> None:
         pyperclip.copy(message)
         time.sleep(2)
         pyautogui.click(self.text_box_x, self.text_box_y)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(1)
-        if picturePaths:
-            for picturePath in picturePaths:
+        if picture_paths:
+            for picture_path in picture_paths:
                 subprocess.run(
-                    ["xclip", "-selection", "clipboard", "-t", "image/png", "-i", f"{picturePath}"]
+                    ["xclip", "-selection", "clipboard", "-t", "image/png", "-i", f"{picture_path}"]
                 )
                 time.sleep(2)
                 pyautogui.hotkey('ctrl', 'v')

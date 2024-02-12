@@ -10,6 +10,7 @@ Based on pyautogui and pyperclip, so you need a GUI environment to run this.
 
 ```shell
 # first install qq for linux, for ubuntu you download .deb and install with dpkg
+pip install requests
 pip install pyautogui
 pip install pyperclip # may need apt install xclip first
 python server.py

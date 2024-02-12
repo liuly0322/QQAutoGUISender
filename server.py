@@ -2,30 +2,13 @@
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from message_sender import MessageSender
+from image_handler import ImageHandler
 import urllib.parse
-from json import loads
-from threading import Lock
-import re
-import requests
-import os
+import json
+import threading
 
 sender = MessageSender()
-lock = Lock()
-regex = re.compile(r'(?P<full>!\[\]\((?P<url>.*?)\))')
-
-os.makedirs("tmp", exist_ok=True)
-
-
-def download_image(url, filename):
-    response = requests.get(url, stream=True)
-    if response.status_code == 200:
-        with open(filename, 'wb') as file:
-            for chunk in response.iter_content(chunk_size=1024):
-                if chunk:
-                    file.write(chunk)
-    else:
-        print("Error: Unable to download image.")
-
+lock = threading.Lock()
 
 class RequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -45,7 +28,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         post_data = self.rfile.read(content_length)
         message = post_data.decode('utf-8')
         message = urllib.parse.unquote(message)
-        message = loads(message)
+        message = json.loads(message)
         nickname, content, id = message['nickname'], message['content'], message['id']
         if id != 'password':  # password here
             self.send_response(404)
@@ -61,29 +44,16 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(message.encode('utf-8'))
             return
 
-        matches = regex.finditer(content)
-        if matches:
-            picturePaths = []
-            for i, match in enumerate(matches):
-                pictureURLPath = match.group("url")
-                picturePath = os.path.join("tmp", f"{i}")
-                download_image(pictureURLPath, picturePath)
-                picturePaths += [picturePath]
-                content = content.replace(match.group("full"), f"[image: {i}]")
+        try:
+            content, picture_paths = ImageHandler.handle_content(content)
             message = f"{nickname}: {content}"
-            sender.send(message, picturePaths)
+            sender.send(message, picture_paths)
             self.send_response(200)
             self.end_headers()
             message = "消息发送成功"
             self.wfile.write(message.encode('utf-8'))
-        else:
-            message = f"{nickname}: {content}"
-            sender.send(message)
-            self.send_response(200)
-            self.end_headers()
-            message = "消息发送成功"
-            self.wfile.write(message.encode('utf-8'))
-        lock.release()
+        finally:
+            lock.release()
 
 
 if __name__ == "__main__":
