@@ -3,39 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>路过的某不知名 bot</title>
-</head>
-<body>
-    <h1>路过的某不知名 bot</h1>
-    <form id="form">
-        <input type="text" id="id" placeholder="群号（作为验证用）">
-        <input type="text" id="nickname" placeholder="昵称">
-        <input type="text" id="content" placeholder="内容">
-        <button type="submit">提交</button>
-        <div id="result"></div>
-    </form>
+    <title>一般通过 bot</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 4em 0 0 0;
+            padding: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
         form {
             display: flex;
             flex-direction: column;
             width: 300px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        input {
-            margin: 10px;
-            padding: 5px;
+
+        textarea,
+        input[type="text"] {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
         }
+
+        textarea:focus,
+        input[type="text"]:focus {
+            border-color: #66afe9;
+        }
+
         button {
-            padding: 5px;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #66afe9;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #5bc0de;
+        }
+
+        #result {
+            margin-top: 10px;
+            color: #555;
+            font-style: italic;
         }
     </style>
+</head>
+<body>
+    <div class="container">
+        <h1>一般通过 bot</h1>
+        <form id="form">
+            <input type="text" id="id" placeholder="群号（作为验证用）">
+            <input type="text" id="nickname" placeholder="昵称">
+            <textarea id="content" placeholder="内容（支持 ![](url) 格式的网络图片，一次最多发送一张）" rows="6"></textarea>
+            <button type="submit">提交</button>
+            <div id="result"></div>
+        </form>
+    </div>
+
     <script>
         document.getElementById('form').addEventListener('submit', function (e) {
             e.preventDefault();
+
             const id = document.getElementById('id').value;
             const nickname = document.getElementById('nickname').value;
             const content = document.getElementById('content').value;
+            if (!id || !nickname || !content) {
+                document.getElementById('result').innerText = '请填写完整';
+                return;
+            }
+
             document.getElementById('result').innerText = '正在发送...';
-            document.getElementById('content').value = '';
             fetch('/bot/send', {
                 method: 'POST',
                 headers: {
@@ -52,6 +113,9 @@
             })
             .then(function (data) {
                 document.getElementById('result').innerText = data;
+                if (data === "消息发送成功") {
+                    document.getElementById('content').value = '';
+                }
             });
         });
     </script>
