@@ -13,11 +13,11 @@ def post_message(path):
         data = request.json
         nickname, content, id = data.get('nickname'), data.get('content'), data.get('id')
         if id != 'password':  # password here
-            return "404 Not Found", 404
+            return "验证未通过喵", 404
 
         successfully_acquired = lock.acquire(False)
         if not successfully_acquired:
-            return "等待其他消息发送完成", 503
+            return "有其他消息正在发送", 503
         
         try:
             content, picture_paths = ImageHandler.handle_content(content)
