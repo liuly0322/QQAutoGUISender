@@ -7,7 +7,7 @@ os.makedirs("tmp", exist_ok=True)
 class ImageHandler:
     @staticmethod
     def download_image(url, filename):
-        response = requests.get(url, stream=True)
+        response = requests.get(url, stream=True, timeout=(4, 4))
         if response.status_code == 200 and \
             response.headers['Content-Type'].startswith('image') and \
             int(response.headers['Content-Length']) < 50 * 1024 * 1024:

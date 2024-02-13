@@ -11,26 +11,25 @@ password = os.environ.get('PASSWORD')
 
 @app.route('/<path:path>', methods=['POST'])
 def post_message(path):
-    if request.method == 'POST':
-        data = request.json
-        nickname, content, id = data.get('nickname'), data.get('content'), data.get('id')
-        if id != password:
-            return "验证未通过喵", 404
+    data = request.json
+    nickname, content, id = data.get('nickname'), data.get('content'), data.get('id')
+    if id != password:
+        return "验证未通过喵", 404
 
-        successfully_acquired = lock.acquire(False)
-        if not successfully_acquired:
-            return "有其他消息正在发送", 503
-        
-        try:
-            content, picture_paths = ImageHandler.handle_content(content)
-            message = f"{nickname}: {content}"
-            sender.send(message, picture_paths)
-        except:
-            lock.release()
-            return "消息发送失败", 500
+    successfully_acquired = lock.acquire(False)
+    if not successfully_acquired:
+        return "有其他消息正在发送", 503
 
+    try:
+        content, picture_paths = ImageHandler.handle_content(content)
+        message = f"{nickname}: {content}"
+        sender.send(message, picture_paths)
+    except Exception as e:
         lock.release()
-        return "消息发送成功", 200
+        return f"消息发送失败: {e}", 500
+
+    lock.release()
+    return "消息发送成功", 200
 
 @app.route('/')
 def index():
