@@ -1,10 +1,8 @@
-# QQ forward bot
+# QQ Auto GUI Sender
 
-Forward messages from web to QQ group.
+Forward anonymous messages from a website to QQ based on pyautogui and pyperclip.
 
-Can be used as a anonymous chat forward bot.
-
-Based on pyautogui and pyperclip, so you need a GUI environment to run this.
+You need a desktop environment to run this.
 
 ## Usage
 
@@ -15,9 +13,11 @@ pip install -r requirements.txt
 python server.py
 ```
 
-The server is at `http://localhost:8080`.
+The server is now running on `http://localhost:8080`.
 
-You can use [frp](https://github.com/fatedier/frp) or deploy it on a VPS with public IP.
+## deploy
+
+You can deploy it on a VPS with public IP or use [frp](https://github.com/fatedier/frp) to make it public.
 
 ### Content format
 
