@@ -2,17 +2,19 @@ from flask import Flask, request, send_from_directory
 from message_sender import MessageSender
 from image_handler import ImageHandler
 import threading
+import os
 
 app = Flask(__name__)
 sender = MessageSender()
 lock = threading.Lock()
+password = os.environ.get('PASSWORD')
 
 @app.route('/<path:path>', methods=['POST'])
 def post_message(path):
     if request.method == 'POST':
         data = request.json
         nickname, content, id = data.get('nickname'), data.get('content'), data.get('id')
-        if id != 'password':  # password here
+        if id != password:
             return "验证未通过喵", 404
 
         successfully_acquired = lock.acquire(False)
