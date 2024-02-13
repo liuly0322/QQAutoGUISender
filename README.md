@@ -28,4 +28,3 @@ The content support image with `![](url)` format.
 
 - `requirements.txt`
 - server -> FastAPI/Flask, async support
-- delay
