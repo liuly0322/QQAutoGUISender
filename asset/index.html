@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>緒山まひろBot</title>
+    <style>
+        @font-face {
+            font-family: 'M PLUS Rounded 1c';
+            font-style: normal;
+            font-weight: 800;
+            font-display: swap;
+            src: url('font.ttf') format('truetype');
+        }
+        html {
+            background: url('background.jpg');
+            background-size: contain;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            margin: 4px 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2em;
+            border: 4px solid #ee858c;
+            background-color: #fff899;
+            border-radius: 20px;
+            box-sizing: border-box;
+            max-width: 1200px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        textarea,
+        input[type="text"] {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 0px 1000px white inset;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #66afe9;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #5bc0de;
+        }
+
+        #result {
+            margin-top: 10px;
+            color: #555;
+            font-style: italic;
+        }
+
+        .botTitle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .charaImg {
+            width: 50%;
+        }
+
+        .charaNameWrap {
+            display: flex;
+            align-items: flex-end;
+            line-height: 1;
+            font-weight: 800;
+            font-family: YakuHanRP,'M PLUS Rounded 1c', "Yu Gothic", YuGothic, "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+            margin-bottom: 40px;
+        }
+
+        .charaName {
+            font-size: 44px;
+            line-height: 1;
+            color: #ee858c;
+            display: inline-block;
+        }
+
+        .botSpan {
+            font-size: 24px;
+            color: #45bbff;
+            display: inline-block;
+            padding-left: 12px;
+            line-height: 1.1;
+        }
+
+        @media screen and (max-width: 450px) {
+            .container {
+                padding: 0;
+                padding-top: 1em;
+                margin-top: 1em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="botTitle">
+            <img src="mahiro.png" alt="mahiro" class="charaImg">
+            <h3 class="charaNameWrap">
+                <span class="charaName">緒山まひろ</span>
+                <span class="botSpan">Bot</span>
+            </h3>
+        </div>
+        <form id="form">
+            <input type="text" id="id" placeholder="群号（作为验证用）">
+            <input type="text" id="nickname" placeholder="昵称">
+            <textarea id="content" placeholder="内容（支持 ![](url) 格式的网络图片，出于性能考虑建议一次最多发送一张）" rows="6"></textarea>
+            <button type="submit">发送！</button>
+            <div id="result"></div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const id = document.getElementById('id').value;
+            const nickname = document.getElementById('nickname').value;
+            const content = document.getElementById('content').value;
+            if (!id || !nickname || !content) {
+                document.getElementById('result').innerText = '请填写完整';
+                return;
+            }
+
+            document.getElementById('result').innerText = '正在发送...';
+            fetch('/bot/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: id,
+                    nickname: nickname,
+                    content: content
+                })
+            })
+                .then(function (res) {
+                    return res.text();
+                })
+                .then(function (data) {
+                    document.getElementById('result').innerText = data;
+                    if (data === "消息发送成功") {
+                        document.getElementById('content').value = '';
+                    }
+                });
+        });
+    </script>
+</body>
+
+</html>

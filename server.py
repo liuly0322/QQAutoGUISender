@@ -1,63 +1,44 @@
-# 服务器，提供 /index.html 和 /send 接口
-
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from flask import Flask, request, send_from_directory
 from message_sender import MessageSender
 from image_handler import ImageHandler
-import urllib.parse
-import json
 import threading
 
+app = Flask(__name__)
 sender = MessageSender()
 lock = threading.Lock()
 
-class RequestHandler(BaseHTTPRequestHandler):
-    timeout = 30
-    def do_GET(self):
-        if self.path == "/index.html" or self.path == "/":
-            with open("index.html", "rb") as f:
-                self.send_response(200)
-                self.send_header("Content-type", "text/html")
-                self.end_headers()
-                self.wfile.write(f.read())
-        else:
-            self.send_response(404)
-            self.end_headers()
-            self.wfile.write(b"404 Not Found")
-
-    def do_POST(self):
-        content_length = int(self.headers['Content-Length'])
-        post_data = self.rfile.read(content_length)
-        message = post_data.decode('utf-8')
-        message = urllib.parse.unquote(message)
-        message = json.loads(message)
-        nickname, content, id = message['nickname'], message['content'], message['id']
+@app.route('/<path:path>', methods=['POST'])
+def post_message(path):
+    if request.method == 'POST':
+        data = request.json
+        nickname, content, id = data.get('nickname'), data.get('content'), data.get('id')
         if id != 'password':  # password here
-            self.send_response(404)
-            self.end_headers()
-            self.wfile.write(b"404 Not Found")
-            return
+            return "404 Not Found", 404
 
         successfully_acquired = lock.acquire(False)
         if not successfully_acquired:
-            self.send_response(503)
-            self.end_headers()
-            message = "等待其他消息发送完成"
-            self.wfile.write(message.encode('utf-8'))
-            return
-
+            return "等待其他消息发送完成", 503
+        
         try:
             content, picture_paths = ImageHandler.handle_content(content)
             message = f"{nickname}: {content}"
             sender.send(message, picture_paths)
-            self.send_response(200)
-            self.end_headers()
-            message = "消息发送成功"
-            self.wfile.write(message.encode('utf-8'))
-        finally:
+        except:
             lock.release()
+            return "消息发送失败", 500
 
+        lock.release()
+        return "消息发送成功", 200
 
-if __name__ == "__main__":
-    httpd = HTTPServer(('localhost', 8080), RequestHandler)
-    print("server started at http://localhost:8080/")
-    httpd.serve_forever()
+@app.route('/')
+def index():
+    return send_from_directory('asset', 'index.html')
+    
+
+@app.route('/<path:filename>')
+def asset(filename):
+    return send_from_directory('asset', filename)
+
+if __name__ == '__main__':
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=8080)
