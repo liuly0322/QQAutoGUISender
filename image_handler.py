@@ -8,19 +8,15 @@ class ImageHandler:
     @staticmethod
     def download_image(url, filename):
         response = requests.get(url, stream=True, timeout=(4, 4))
-        if response.status_code == 200 and \
-            response.headers['Content-Type'].startswith('image') and \
-            int(response.headers['Content-Length']) < 50 * 1024 * 1024:
-            with open(filename, 'wb') as file:
-                for chunk in response.iter_content(chunk_size=1024):
-                    if chunk:
-                        file.write(chunk)
-            return True
-        else:
-            print("Error: Unable to download image.")
-            print(f"Status code: {response.status_code}")
-            print(f"Content type: {response.headers['Content-Type']}")
-            print(f"Content length: {response.headers['Content-Length']}")
+        if response.status_code != 200 or \
+            not response.headers['Content-Type'].startswith('image') or \
+            int(response.headers['Content-Length']) > 50 * 1024 * 1024:
+            return False
+
+        with open(filename, 'wb') as file:
+            for chunk in response.iter_content(chunk_size=1024):
+                file.write(chunk)
+        return True
 
     @staticmethod
     def handle_content(content: str):
