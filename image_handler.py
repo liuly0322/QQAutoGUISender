@@ -15,7 +15,7 @@ class ImageHandler:
         size = 0
         maximum_size = 1024 * 1024 * 50
         start = time.time()
-        receive_timeout = 4
+        receive_timeout = 20
 
         def write_chunk(file, chunk):
             nonlocal size
