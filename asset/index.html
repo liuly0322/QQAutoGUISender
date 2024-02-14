@@ -158,6 +158,11 @@
     </div>
 
     <script>
+        document.getElementById('id').value = localStorage.getItem('id') || '';
+        document.getElementById('id').addEventListener("change", (e) => {
+            localStorage.setItem('id', e.target.value);
+        })
+
         document.getElementById('form').addEventListener('submit', function (e) {
             e.preventDefault();
 
