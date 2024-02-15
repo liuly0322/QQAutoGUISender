@@ -16,7 +16,7 @@
 
         html {
             background: url('background.jpg');
-            background-size: 750px 523px;
+            background-size: 1500px 1046px;
         }
 
         body {
@@ -67,7 +67,7 @@
             border-radius: 5px;
             box-shadow: 0 0 0px 1000px white inset;
             outline-style: none;
-            transition: 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         textarea:focus,
@@ -151,6 +151,15 @@
 
         details ul li {
             margin-bottom: 10px;
+            opacity: 1;
+            max-height: 50px;
+            transition: all 0.3s linear;
+        }
+
+        details.close ul li{
+            margin-bottom: 0;
+            opacity: 0;
+            max-height: 0;
         }
 
         .code {
@@ -183,11 +192,11 @@
             <input type="text" id="id" placeholder="群号（作为验证用）">
             <input type="text" id="nickname" placeholder="昵称">
             <textarea id="content" placeholder="内容" rows="6"></textarea>
-            <details>
+            <details class="close">
                 <summary>展开支持语法</summary>
                 <ul>
-                    <li><span class="code">![](url)</span>：发送网络图片，出于性能考虑建议一次最多发送一张</li>
-                    <li><span class="code">&gt; nickname</span>：单独一行，来回复某个匿名用户的最近发言</li>
+                    <li><span class="code">![](url)</span>：发送网络图片，建议一次最多发送一张</li>
+                    <li><span class="code">&gt; nickname</span>：单独一行，回复某个匿名用户的最近发言</li>
                     <li><span class="code">@qq_number</span>：提及群友</li>
                 </ul>
             </details>
@@ -201,8 +210,17 @@
         const idElement = document.querySelector('#id');
         const nicknameElement = document.querySelector('#nickname');
         const contentElement = document.querySelector('#content');
+        const detailsElement = document.querySelector('details');
         const buttonElement = document.querySelector('button');
         const resultElement = document.querySelector('#result');
+
+        detailsElement.addEventListener('toggle', function (e) {
+            if (detailsElement.open) {
+                detailsElement.classList.remove('close');
+            } else {
+                detailsElement.classList.add('close');
+            }
+        });
 
         const rememberInputTextById = (elementId, defaultValue) => {
             const element = document.getElementById(elementId);
