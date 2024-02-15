@@ -17,14 +17,13 @@ class MessageSender:
         time.sleep(1)
         pyautogui.click(self.text_box_x, self.text_box_y)
         pyautogui.hotkey('ctrl', 'v')
-        if picture_paths:
-            for picture_path in picture_paths:
-                subprocess.run(
-                    ["xclip", "-selection", "clipboard", "-t", "image/png", "-i", f"{picture_path}"]
-                )
-                time.sleep(2)
-                pyautogui.hotkey('ctrl', 'v')
-                time.sleep(1)
+        for picture_path in picture_paths or []:
+            subprocess.run(
+                ["xclip", "-selection", "clipboard", "-t", "image/png", "-i", f"{picture_path}"]
+            )
+            time.sleep(2)
+            pyautogui.hotkey('ctrl', 'v')
+            time.sleep(1)
         pyautogui.press('enter')
 
 
