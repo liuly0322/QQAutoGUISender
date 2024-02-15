@@ -214,11 +214,14 @@
         const buttonElement = document.querySelector('button');
         const resultElement = document.querySelector('#result');
 
-        detailsElement.addEventListener('toggle', function (e) {
+        detailsElement.addEventListener('click', function (e) {
+            e.preventDefault();
             if (detailsElement.open) {
-                detailsElement.classList.remove('close');
-            } else {
                 detailsElement.classList.add('close');
+                setTimeout(() => {detailsElement.open = false}, 300);
+            } else {
+                detailsElement.open = true;
+                setTimeout(() => {detailsElement.classList.remove('close')}, 100);
             }
         });
 
