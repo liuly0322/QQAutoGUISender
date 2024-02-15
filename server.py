@@ -1,11 +1,13 @@
 from flask import Flask, request, send_from_directory
 from message_sender import MessageSender
 from image_handler import ImageHandler
+from reply_handler import ReplyHandler
 import threading
 import os
 
 app = Flask(__name__)
 sender = MessageSender()
+replyer = ReplyHandler()
 lock = threading.Lock()
 password = os.environ.get('PASSWORD')
 
@@ -22,8 +24,11 @@ def post_message(path):
 
     try:
         content, picture_paths = ImageHandler.handle_content(content)
-        message = f"{nickname}: {content}"
+        content = replyer.replace_reply(content)
+        split = "\n" if "\n" in content else ""
+        message = nickname + ": " + split + content
         sender.send(message, picture_paths)
+        replyer.add_history(nickname, message)
     except Exception as e:
         lock.release()
         return f"消息发送失败: {e}", 500

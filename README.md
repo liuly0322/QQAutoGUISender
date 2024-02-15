@@ -26,3 +26,7 @@ The website is now available on `http://localhost:8080`.
 ### Image
 
 You can send web image with `![](url)` grammar.
+
+### Reply
+
+You can reply to a latest message from `{user}` with `> {user}\n` grammar.
