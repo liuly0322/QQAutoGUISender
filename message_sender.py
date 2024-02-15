@@ -15,11 +15,6 @@ class MessageSender:
     def send(self, message, picture_paths=None, at_numbers=None) -> None:
         pyautogui.click(self.text_box_x, self.text_box_y)
 
-        for at_number in at_numbers or []:
-            pyautogui.write(f"@{at_number}")
-            pyautogui.press('enter')
-            time.sleep(1)
-
         pyperclip.copy(message)
         time.sleep(1)
         pyautogui.hotkey('ctrl', 'v')
@@ -31,6 +26,12 @@ class MessageSender:
             time.sleep(2)
             pyautogui.hotkey('ctrl', 'v')
             time.sleep(1)
+
+        for at_number in at_numbers or []:
+            pyautogui.write(f"@{at_number}")
+            pyautogui.press('enter')
+            time.sleep(1)
+
         pyautogui.press('enter')
 
 
