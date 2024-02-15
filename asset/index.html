@@ -13,6 +13,7 @@
             font-display: swap;
             src: url('font.ttf') format('truetype');
         }
+
         html {
             background: url('background.jpg');
             background-size: contain;
@@ -110,7 +111,7 @@
             align-items: flex-end;
             line-height: 1;
             font-weight: 800;
-            font-family: YakuHanRP,'M PLUS Rounded 1c', "Yu Gothic", YuGothic, "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+            font-family: YakuHanRP, 'M PLUS Rounded 1c', "Yu Gothic", YuGothic, "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
             margin-bottom: 40px;
         }
 
@@ -151,7 +152,8 @@
         <form id="form">
             <input type="text" id="id" placeholder="群号（作为验证用）">
             <input type="text" id="nickname" placeholder="昵称">
-            <textarea id="content" placeholder="内容（支持 ![](url) 格式的网络图片，出于性能考虑建议一次最多发送一张）" rows="6"></textarea>
+            <textarea id="content" placeholder="内容（支持 ![](url) 格式的网络图片，出于性能考虑建议一次最多发送一张；支持使用 > {user}\n 来回复某个匿名用户的最近发言）"
+                rows="6"></textarea>
             <button type="submit">发送！</button>
             <div id="result"></div>
         </form>
