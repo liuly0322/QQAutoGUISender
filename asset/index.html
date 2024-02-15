@@ -89,6 +89,11 @@
             background-color: #5bc0de;
         }
 
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
         #result {
             margin-top: 10px;
             color: #555;
@@ -158,23 +163,36 @@
     </div>
 
     <script>
-        document.getElementById('id').value = localStorage.getItem('id') || '';
-        document.getElementById('id').addEventListener("change", (e) => {
-            localStorage.setItem('id', e.target.value);
-        })
+        const formElement = document.querySelector('#form');
+        const idElement = document.querySelector('#id');
+        const nicknameElement = document.querySelector('#nickname');
+        const contentElement = document.querySelector('#content');
+        const buttonElement = document.querySelector('button');
+        const resultElement = document.querySelector('#result');
 
-        document.getElementById('form').addEventListener('submit', function (e) {
+        const rememberInputTextById = (elementId, defaultValue) => {
+            const element = document.getElementById(elementId);
+            element.value = localStorage.getItem(elementId) || defaultValue;
+            element.addEventListener("change", (e) => {
+                localStorage.setItem(elementId, e.target.value);
+            });
+        }
+        rememberInputTextById('id', '');
+        rememberInputTextById('nickname', '');
+
+        formElement.addEventListener('submit', function (e) {
             e.preventDefault();
+            buttonElement.disabled = true;
 
-            const id = document.getElementById('id').value;
-            const nickname = document.getElementById('nickname').value;
-            const content = document.getElementById('content').value;
+            const id = idElement.value;
+            const nickname = nicknameElement.value;
+            const content = contentElement.value;
             if (!id || !nickname || !content) {
-                document.getElementById('result').innerText = '请填写完整';
+                resultElement.innerText = '请填写完整';
                 return;
             }
 
-            document.getElementById('result').innerText = '正在发送...';
+            resultElement.innerText = '正在发送...';
             fetch('/bot/send', {
                 method: 'POST',
                 headers: {
@@ -190,10 +208,15 @@
                     return res.text();
                 })
                 .then(function (data) {
-                    document.getElementById('result').innerText = data;
+                    resultElement.innerText = data;
                     if (data === "消息发送成功") {
                         document.getElementById('content').value = '';
                     }
+                    buttonElement.disabled = false;
+                })
+                .catch(function (err) {
+                    resultElement.innerText = '发送失败';
+                    buttonElement.disabled = false;
                 });
         });
     </script>
