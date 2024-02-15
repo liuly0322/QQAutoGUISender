@@ -20,7 +20,7 @@ class ReplyHandler:
         lines = content.split('\n')
         for i, line in enumerate(lines):
             if line.startswith('> '):
-                user= line[len('> '):]
+                user = line[len('> '):]
                 history = self.get_history(user)
                 if history:
                     lines[i] = '> '+"\n> ".join(history.split('\n'))

@@ -23,11 +23,16 @@ def post_message(path):
         return "有其他消息正在发送", 503
 
     try:
-        content, picture_paths = ImageHandler.handle_content(content)
+        content, picture_paths = ImageHandler.replace_image(content)
         content = replyer.replace_reply(content)
-        split = "\n" if "\n" in content else ""
-        message = nickname + ": " + split + content
+
+        message = nickname + ": "
+        if "\n" in content:
+            message += "\n"
+        message += content
+
         sender.send(message, picture_paths)
+
         replyer.add_history(nickname, message)
     except Exception as e:
         lock.release()

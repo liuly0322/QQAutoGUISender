@@ -33,7 +33,7 @@ class ImageHandler:
                 write_chunk(file, chunk)
 
     @staticmethod
-    def handle_content(content: str):
+    def replace_image(content: str):
         matches = re.compile(r'(?P<full>!\[\]\((?P<url>.*?)\))').finditer(content)
         picture_paths = []
         if matches:
