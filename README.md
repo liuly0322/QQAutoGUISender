@@ -18,7 +18,8 @@ You need a **linux desktop environment** to run this.
 # login and open the chat window you want to send
 sudo apt install xclip
 pip install -r requirements.txt
-PASSWORD={{YourPassword}} python server.py
+# set a password for website authentication
+PASSWORD={{YourPasswordHere}} python server.py
 ```
 
 The website is now available on `http://localhost:8080`.
