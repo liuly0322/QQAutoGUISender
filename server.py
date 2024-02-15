@@ -1,6 +1,7 @@
 from flask import Flask, request, send_from_directory
 from message_sender import MessageSender
 from image_handler import ImageHandler
+from at_handler import AtHandler
 from reply_handler import ReplyHandler
 import threading
 import os
@@ -24,6 +25,7 @@ def post_message(path):
 
     try:
         content, picture_paths = ImageHandler.replace_image(content)
+        content, at_numbers = AtHandler.replace_at(content)
         content = replyer.replace_reply(content)
 
         message = nickname + ": "
@@ -31,7 +33,7 @@ def post_message(path):
             message += "\n"
         message += content
 
-        sender.send(message, picture_paths)
+        sender.send(message, picture_paths, at_numbers)
 
         replyer.add_history(nickname, message)
     except Exception as e:

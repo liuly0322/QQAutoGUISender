@@ -24,10 +24,10 @@ PASSWORD={{YourPasswordHere}} python server.py
 
 The website is now available on `http://localhost:8080`.
 
-### Image
+### Support Commands
 
-You can send web image with `![](url)` grammar.
+- `![](url)`: Send a image from url.
+- `@{qq_number}`: Mention a QQ user.
+- `> {user}\n`: Reply to a latest message from (anonymous) `{user}`.
 
-### Reply
-
-You can reply to a latest message from `{user}` with `> {user}\n` grammar.
+`\n` above means you need to start a new line after the command.
