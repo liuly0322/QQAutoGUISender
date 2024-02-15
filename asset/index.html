@@ -16,14 +16,13 @@
 
         html {
             background: url('background.jpg');
-            background-size: contain;
+            background-size: 750px 523px;
         }
 
         body {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100vw;
             margin: 4px 0;
         }
 
@@ -60,6 +59,7 @@
         }
 
         textarea,
+        details,
         input[type="text"] {
             margin: 10px 0;
             padding: 10px;
@@ -67,7 +67,7 @@
             border-radius: 5px;
             box-shadow: 0 0 0px 1000px white inset;
             outline-style: none;
-            transition: border-color 0.3s ease;
+            transition: 0.3s ease;
         }
 
         textarea:focus,
@@ -135,6 +135,31 @@
             line-height: 1.1;
         }
 
+        details {
+            font-size: 14px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        details summary {
+            cursor: pointer;
+        }
+
+        details ul {
+            padding-left: 20px;
+        }
+
+        details ul li {
+            margin-bottom: 10px;
+        }
+
+        .code {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
         @media screen and (max-width: 450px) {
             .container {
                 padding: 0;
@@ -157,8 +182,15 @@
         <form id="form">
             <input type="text" id="id" placeholder="群号（作为验证用）">
             <input type="text" id="nickname" placeholder="昵称">
-            <textarea id="content" placeholder="内容（支持 ![](url) 格式的网络图片，出于性能考虑建议一次最多发送一张；支持使用 > {user}\n 来回复某个匿名用户的最近发言）；支持 @qq 号来提及群友"
-                rows="6"></textarea>
+            <textarea id="content" placeholder="内容" rows="6"></textarea>
+            <details>
+                <summary>展开支持语法</summary>
+                <ul>
+                    <li><span class="code">![](url)</span>：发送网络图片，出于性能考虑建议一次最多发送一张</li>
+                    <li><span class="code">&gt; nickname</span>：单独一行，来回复某个匿名用户的最近发言</li>
+                    <li><span class="code">@qq_number</span>：提及群友</li>
+                </ul>
+            </details>
             <button type="submit">发送！</button>
             <div id="result"></div>
         </form>
