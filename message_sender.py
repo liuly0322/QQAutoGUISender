@@ -26,7 +26,10 @@ class MessageSender:
 
         pyautogui.click(self.search_box_x, self.search_box_y)
         time.sleep(0.1)
-        pyautogui.write(group_id)
+        pyperclip.copy(group_id)
+        time.sleep(1)
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(1)
         pyautogui.press('enter')
         time.sleep(0.1)
 

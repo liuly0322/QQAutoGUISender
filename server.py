@@ -15,7 +15,7 @@ sender = MessageSender()
 replyer = ReplyHandler()
 lock = threading.Lock()
 
-@app.route('/send', methods=['POST'])
+@app.route('/<path:path>', methods=['POST'])
 def post_message(path):
     data = request.json
     nickname, content, group_id = data.get('nickname'), data.get('content'), data.get('id')
