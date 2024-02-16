@@ -3,7 +3,7 @@
 
 # 緒山まひろBot & QQ Auto GUI Sender
 
-Forward anonymous messages from a website to QQ chat (or group) based on pyautogui and pyperclip.
+Forward anonymous messages from a website to QQ groups based on pyautogui and pyperclip.
 
 You need a **linux desktop environment** to run this.
 
