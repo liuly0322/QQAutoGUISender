@@ -13,16 +13,19 @@ You need a **linux desktop environment** to run this.
 
 ### Installation
 
-```shell
-# first install qq for linux from https://im.qq.com/linuxqq
-# login and open the chat window you want to send
-sudo apt install xclip
-pip install -r requirements.txt
-# set a password for website authentication
-PASSWORD={{YourPasswordHere}} python server.py
-```
+1. install [linuxqq](https://im.qq.com/linuxqq), login and open a chat window.
+2. install dependencies
+   ```shell
+   sudo apt install xclip
+   pip install -r requirements.txt
+   ```
+3. edit `sample.env` to config allow-groups and rename it to `.env`
+4. start the server
+   ```shell
+   python server.py
+   ```
 
-The website is now available on `http://localhost:8080`.
+The website is now running on `http://localhost:8080`.
 
 ### Support Commands
 

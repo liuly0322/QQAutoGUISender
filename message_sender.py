@@ -12,7 +12,7 @@ class MessageSender:
             exit(1)
         self.text_box_x, self.text_box_y = pyautogui.center(text_box_position)
 
-    def send(self, message, picture_paths=None, at_numbers=None) -> None:
+    def send(self, group_id, message, picture_paths=None, at_numbers=None) -> None:
         pyautogui.click(self.text_box_x, self.text_box_y)
 
         pyperclip.copy(message)

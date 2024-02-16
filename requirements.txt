@@ -15,6 +15,7 @@ PyMsgBox==1.0.9
 pyperclip==1.8.2
 PyRect==0.2.0
 PyScreeze==0.1.30
+python-dotenv==1.0.1
 python3-xlib==0.15
 pytweening==1.0.7
 requests==2.31.0
