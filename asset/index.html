@@ -156,7 +156,7 @@
             transition: all 0.3s linear;
         }
 
-        details.close ul li{
+        details.close ul li {
             margin-bottom: 0;
             opacity: 0;
             max-height: 0;
@@ -192,12 +192,14 @@
             <input type="text" id="id" placeholder="群号">
             <input type="text" id="nickname" placeholder="昵称">
             <textarea id="content" placeholder="内容" rows="6"></textarea>
+            <input type="file" id="file" accept="image/*">
             <details class="close">
-                <summary>展开支持语法</summary>
+                <summary>展开使用说明</summary>
                 <ul>
                     <li><span class="code">![](url)</span>：发送网络图片，建议一次最多发送一张</li>
                     <li><span class="code">&gt; nickname</span>：单独一行，回复某个匿名用户的最近发言</li>
                     <li><span class="code">@qq_number</span>：提及群友</li>
+                    <li>支持上传单张图片</li>
                 </ul>
             </details>
             <button type="submit">发送！</button>
@@ -218,10 +220,10 @@
             e.preventDefault();
             if (detailsElement.open) {
                 detailsElement.classList.add('close');
-                setTimeout(() => {detailsElement.open = false}, 300);
+                setTimeout(() => { detailsElement.open = false }, 300);
             } else {
                 detailsElement.open = true;
-                setTimeout(() => {detailsElement.classList.remove('close')}, 100);
+                setTimeout(() => { detailsElement.classList.remove('close') }, 100);
             }
         });
 
@@ -235,44 +237,53 @@
         rememberInputTextById('id', '');
         rememberInputTextById('nickname', '');
 
-        formElement.addEventListener('submit', function (e) {
+        formElement.addEventListener('submit', async function (e) {
             e.preventDefault();
-            buttonElement.disabled = true;
 
             const id = idElement.value;
             const nickname = nicknameElement.value;
             const content = contentElement.value;
-            if (!id || !nickname || !content) {
-                resultElement.innerText = '请填写完整';
+            if (!id || !nickname) {
+                resultElement.innerText = '请填写群号和呢称';
                 return;
             }
+            buttonElement.disabled = true;
+
+            const file = document.getElementById('file').files[0];
+            function getBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = error => reject(error);
+                });
+            }
+            const fileBase64 = file ? await getBase64(file) : '';
 
             resultElement.innerText = '正在发送...';
-            fetch('send', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    id: id,
-                    nickname: nickname,
-                    content: content
-                })
-            })
-                .then(function (res) {
-                    return res.text();
-                })
-                .then(function (data) {
-                    resultElement.innerText = data;
-                    if (data === "消息发送成功") {
-                        document.getElementById('content').value = '';
-                    }
-                    buttonElement.disabled = false;
-                })
-                .catch(function (err) {
-                    resultElement.innerText = '发送失败';
-                    buttonElement.disabled = false;
+            try {
+                const res = await fetch('send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: id,
+                        nickname: nickname,
+                        content: content,
+                        image: fileBase64
+                    })
                 });
+                const data = await res.text();
+                resultElement.innerText = data;
+                if (data === "消息发送成功") {
+                    document.getElementById('content').value = '';
+                }
+                buttonElement.disabled = false;
+            } catch (error) {
+                resultElement.innerText = '发送失败';
+                buttonElement.disabled = false;
+            }
         });
     </script>
 </body>

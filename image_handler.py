@@ -1,6 +1,8 @@
 import re
 import os
 import time
+from typing import Optional, List
+from base64 import b64decode
 import requests
 
 os.makedirs("tmp", exist_ok=True)
@@ -45,3 +47,15 @@ class ImageHandler:
                 content = content.replace(match.group("full"), f"[image: {i}]")
         return content, picture_paths
 
+    @staticmethod
+    def add_user_upload_image(content: str, picture_paths: List[str], image: Optional[str]):
+        if not image:
+            return content, picture_paths
+
+        image_path = os.path.join("tmp", f"{len(picture_paths)}")
+        image_file_content = b64decode(image.split(",")[1])
+        with open(image_path, "wb") as file:
+            file.write(image_file_content)
+
+        content = content + "[upload_image]"
+        return content, picture_paths + [image_path]

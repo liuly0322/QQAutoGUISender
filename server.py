@@ -19,6 +19,8 @@ lock = threading.Lock()
 def post_message(path):
     data = request.json
     nickname, content, group_id = data.get('nickname'), data.get('content'), data.get('id')
+    image = data.get('image')
+
     if group_id not in WHITELIST_GROUPS:
         return "验证未通过喵", 404
 
@@ -28,6 +30,7 @@ def post_message(path):
 
     try:
         content, picture_paths = ImageHandler.replace_image(content)
+        content, picture_paths = ImageHandler.add_user_upload_image(content, picture_paths, image)
         content, at_numbers = AtHandler.replace_at(content)
         content = replyer.replace_reply(content)
 
