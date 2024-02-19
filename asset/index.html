@@ -70,6 +70,10 @@
             transition: all 0.3s ease;
         }
 
+        input:invalid {
+            border-color: #ee858c;
+        }
+
         textarea:focus,
         input[type="text"]:focus {
             border: 1px solid #5bc0de;
@@ -189,8 +193,8 @@
             </h3>
         </div>
         <form id="form">
-            <input type="text" id="id" placeholder="群号">
-            <input type="text" id="nickname" placeholder="昵称">
+            <input type="text" id="id" placeholder="群号" required>
+            <input type="text" id="nickname" placeholder="昵称" required>
             <textarea id="content" placeholder="内容" rows="6"></textarea>
             <input type="file" id="file" accept="image/*">
             <details class="close">
