@@ -56,7 +56,7 @@ class MessageSender:
             pyautogui.press('enter')
             time.sleep(1)
 
-        pyautogui.press('enter')
+        pyautogui.press(['esc', 'enter'])
 
 
 if __name__ == "__main__":
