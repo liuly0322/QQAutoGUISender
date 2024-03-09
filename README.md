@@ -25,6 +25,9 @@ You need a **linux desktop environment** to run this.
    python server.py
    ```
 
+> [!IMPORTANT]  
+> You may need to update [asset/text_box.png](asset/text_box.png) and [asset/search_box.png](asset/search_box.png) if your QQ screenshot is different.
+
 The website is now running on `http://localhost:8080`.
 
 ### Support Commands
