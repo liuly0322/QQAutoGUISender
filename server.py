@@ -51,12 +51,12 @@ def post_message(path):
 
 @app.route('/')
 def index():
-    return send_from_directory('asset', 'index.html')
+    return send_from_directory('asset', 'index.html', max_age=86400)
     
 
 @app.route('/<path:filename>')
 def asset(filename):
-    return send_from_directory('asset', filename)
+    return send_from_directory('asset', filename, max_age=86400)
 
 if __name__ == '__main__':
     from waitress import serve
