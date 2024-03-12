@@ -7,15 +7,9 @@ import subprocess
 class MessageSender:
     def __init__(self) -> None:
         text_box_position = pyautogui.locateOnScreen('asset/text_box.png')
-        if not text_box_position:
-            print("无法找到文本框")
-            exit(1)
         self.text_box_x, self.text_box_y = pyautogui.center(text_box_position)
 
         search_box_position = pyautogui.locateOnScreen('asset/search_box.png')
-        if not search_box_position:
-            print("无法找到搜索框")
-            exit(1)
         self.search_box_x, self.search_box_y = pyautogui.center(search_box_position)
 
         self.current_group_id = None
