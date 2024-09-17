@@ -11,7 +11,7 @@ load_dotenv(".env")
 WHITELIST_GROUPS = os.getenv("WHITELIST_GROUPS").split(",")
 
 app = Flask(__name__)
-sender = MessageSender()
+sender = MessageSender(os.getenv("HTTP_PORT"))
 replyer = ReplyHandler()
 lock = threading.Lock()
 
@@ -29,9 +29,9 @@ def post_message(path):
         return "有其他消息正在发送", 503
 
     try:
-        content, picture_paths = ImageHandler.replace_image(content)
-        content, picture_paths = ImageHandler.add_user_upload_image(content, picture_paths, image)
-        content, at_numbers = AtHandler.replace_at(content)
+        content = ImageHandler.replace_image(content)
+        content = ImageHandler.add_user_upload_image(content, image)
+        content = AtHandler.replace_at(content)
         content = replyer.replace_reply(content)
 
         message = nickname + ": "
@@ -39,7 +39,7 @@ def post_message(path):
             message += "\n"
         message += content
 
-        sender.send(group_id, message, picture_paths, at_numbers)
+        sender.send(group_id, message)
 
         replyer.add_history(nickname, message)
     except Exception as e:
@@ -52,7 +52,7 @@ def post_message(path):
 @app.route('/')
 def index():
     return send_from_directory('asset', 'index.html', max_age=86400)
-    
+
 
 @app.route('/<path:filename>')
 def asset(filename):

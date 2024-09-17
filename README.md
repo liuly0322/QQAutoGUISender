@@ -3,9 +3,7 @@
 
 # 緒山まひろBot & QQ Auto GUI Sender
 
-Forward anonymous messages from a website to QQ groups based on pyautogui and pyperclip.
-
-You need a **linux desktop environment** to run this.
+Forward anonymous messages from a website to QQ groups based on onebot-11 protocol.
 
 </div>
 
@@ -13,10 +11,9 @@ You need a **linux desktop environment** to run this.
 
 ### Installation
 
-1. install [linuxqq](https://im.qq.com/linuxqq), login and open a chat window.
+1. install any protocol implementation like [NapCatQQ](https://github.com/NapNeko/NapCatQQ). It is not recommended to use the "headless launch" method, as it is more likely to be forced offline and offers lesser stability. Set up the configuration to **enable the HTTP service**, then log in to activate the server port as `HTTP_PORT` which will be used in `.env` configuration.
 2. install dependencies
    ```shell
-   sudo apt install xclip
    pip install -r requirements.txt
    ```
 3. edit `sample.env` to config allow-groups and rename it to `.env`
@@ -24,9 +21,6 @@ You need a **linux desktop environment** to run this.
    ```shell
    python server.py
    ```
-
-> [!IMPORTANT]  
-> You may need to update [asset/text_box.png](asset/text_box.png) and [asset/search_box.png](asset/search_box.png) if your QQ screenshot is different.
 
 The website is now running on `http://localhost:8080`.
 
