@@ -3,20 +3,23 @@
 
 # 緒山まひろBot & QQ Auto GUI Sender
 
-Forward anonymous messages from a website to QQ groups based on onebot-11 protocol.
+Forward anonymous messages from a website to QQ groups based on **onebot-11 protocol**.
 
 </div>
+
+> [!NOTE]  
+> There is also a **pyautogui** based implementation in `pyautogui` branch, that's why it is titled "Auto GUI Sender". This way requires a Linux desktop environment.
 
 ## Usage
 
 ### Installation
 
-1. install any protocol implementation like [NapCatQQ](https://github.com/NapNeko/NapCatQQ). It is not recommended to use the "headless launch" method, as it is more likely to be forced offline and offers lesser stability. Set up the configuration to **enable the HTTP service**, then log in to activate the server port as `HTTP_PORT` which will be used in `.env` configuration.
+1. install any protocol implementation like [NapCatQQ](https://github.com/NapNeko/NapCatQQ). It is not recommended to use the "headless launch" method, as it is more likely to be forced offline and offers less stability. Set up the configuration to **enable the HTTP service**, then log in to activate the server port as `HTTP_PORT` which will be used in `.env` configuration.
 2. install dependencies
    ```shell
    pip install -r requirements.txt
    ```
-3. edit `sample.env` to config allow-groups and rename it to `.env`
+3. edit `sample.env` and rename it to `.env`
 4. start the server
    ```shell
    python server.py
