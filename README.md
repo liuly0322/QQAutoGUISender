@@ -11,7 +11,7 @@ Forward anonymous messages from a website to QQ groups based on onebot-11 protoc
 
 ### Installation
 
-1. install any protocol implementation like [NapCatQQ](https://github.com/NapNeko/NapCatQQ), Set up the configuration to enable the HTTP service, then log in to activate the server port as `HTTP_PORT` which will be used in `.env` configuration.
+1. install any protocol implementation like [NapCatQQ](https://github.com/NapNeko/NapCatQQ). It is not recommended to use the "headless launch" method, as it is more likely to be forced offline and offers lesser stability. Set up the configuration to **enable the HTTP service**, then log in to activate the server port as `HTTP_PORT` which will be used in `.env` configuration.
 2. install dependencies
    ```shell
    pip install -r requirements.txt

@@ -1,8 +1,5 @@
 import re
-import os
 from typing import Optional
-
-os.makedirs("tmp", exist_ok=True)
 
 
 class ImageHandler:
@@ -11,7 +8,7 @@ class ImageHandler:
     def replace_image(content: str):
         matches = re.compile(r'(?P<full>!\[\]\((?P<url>.*?)\))').finditer(content)
         if matches:
-            for i, match in enumerate(matches):
+            for match in matches:
                 picture_url_path = match.group("url")
                 content = content.replace(
                     match.group("full"), f"[CQ:image,file={picture_url_path}]"
