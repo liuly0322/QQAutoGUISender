@@ -3,9 +3,6 @@ import os
 import time
 from typing import Optional, List
 from base64 import b64decode
-import requests
-
-os.makedirs("tmp", exist_ok=True)
 
 
 class ImageHandler:
